@@ -1,0 +1,1192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>VanGuard Link</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                colors: {
+                background: '#040516', 
+                primary: '#2531DA',
+                navy: '#0b1024',
+                sidebar: '#0b1024',
+                },
+                fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                },
+                animation: {
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                }
+            }
+            }
+        }
+        </script>
+
+        <style>
+        /* --- GLOBAL STYLES --- */
+        body { 
+            background-color: #040516; 
+            color: white;
+            transition: background-color 1.5s ease;
+        }
+
+        /* Sidebar Transition */
+        #sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Sidebar icon alignment */
+        #sidebar .nav-item > div {
+            min-width: 1.5rem;
+            min-height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sidebar .nav-item svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: block;
+        }
+
+        .transition-width {
+                transition:
+                width 0.28s ease,
+                margin 0.28s ease,
+                opacity 0.28s ease;
+            }
+
+        /* --- AMBIENT MODES --- */
+        body.mode-safe { background-color: #022c22 !important; }
+        body.mode-low { background-color: #1a2e05 !important; }
+        body.mode-suspicious { background-color: #422006 !important; }
+        body.mode-high { background-color: #431407 !important; }
+        body.mode-dangerous { background-color: #450a0a !important; }
+
+        /* --- CYBER GRID --- */
+        .cyber-grid {
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+                            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+        
+        /* SCROLLBAR HIDE */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+
+        .nav-item:hover .api-left {
+            transform: translateX(-2px);
+
+            }
+
+
+
+            .nav-item:hover .api-right {
+            transform: translateX(2px);
+
+            }
+
+
+
+            .api-left,
+            .api-right {
+            transition: transform 200ms ease-out;
+
+            }
+
+
+
+            /* Scanner */
+            @keyframes needleSpin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+
+            }
+
+
+            .nav-item:hover .scanner-needle {
+                animation: needleSpin 1s linear infinite;
+                transform-origin: 12px 12px;
+
+            }
+
+            /* --- Vault Hover Animation --- */
+
+            .vault-shield, .vault-bar-top, .vault-bar-bot {
+                transition: transform 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
+                transform-origin: center;
+
+            }
+
+
+
+            .nav-item:hover .vault-bar-top {
+
+                transform: translateY(-1px);
+                stroke-width: 2.5;
+
+            }
+
+
+
+            .nav-item:hover .vault-bar-bot {
+                transform: translateY(1px);
+                stroke-width: 2.5;
+
+            }
+
+
+
+            /* --- Performance Hover Animation --- */
+            .performance-needle {
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            }
+
+
+
+            /* Needle swings to the right only on hover */
+            .nav-item:hover .performance-needle {
+                transform: rotate(25deg);
+
+            }
+
+
+
+            /*history*/
+            .clock-hand {
+                transform-origin: 12px 12px;
+                transition: transform 0.5s ease-out;
+
+            }
+
+
+
+            .nav-item:hover .clock-hand {
+            transform: rotate(360deg);
+
+            }
+
+                       
+
+            /*Threat*/
+            @keyframes threat-glow {
+                0%, 100% {
+                    stroke: currentColor;
+                    filter: drop-shadow(0 0 0 transparent);
+
+                }
+
+                20%, 60% {
+                    stroke: #ef4444;
+                    filter:
+                    drop-shadow(0 0 6px rgba(239,68,68,0.9))
+                    drop-shadow(0 0 12px rgba(239,68,68,0.6));
+
+                }
+
+                40%, 80% {
+                    stroke: currentColor;
+                    filter: drop-shadow(0 0 0 transparent);
+
+                }
+            }
+
+
+
+            .nav-item:hover .threat-icon {
+                animation: threat-glow 2s ease-out;
+            }
+
+
+
+            /* --- Quarantine (Shield Pulse) --- */
+            .shield-icon {
+                transform-origin: center;
+                transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            }
+
+
+
+            .nav-item:hover .shield-icon {
+                transform: scale(1.15);
+
+            }
+
+
+
+            .shield-line {
+                opacity: 0.7;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                transform-origin: center;
+
+            }
+
+
+
+            .nav-item:hover .shield-line {
+                opacity: 1;
+                transform: rotate(45deg); /* Subtle twist for the lock effect */
+            }
+
+
+
+            /* --- Activity Monitor (ECG Flow) --- */
+            .activity-pulse {
+                stroke-dasharray: 50; /* Length of the line */
+                stroke-dashoffset: 0;
+                transition: all 0.3s ease;
+
+            }
+
+            .nav-item:hover .activity-pulse {
+                animation: ecg-draw 1.5s linear infinite;
+
+            }
+
+
+
+            @keyframes ecg-draw {
+                0% { stroke-dashoffset: 50; }
+                100% { stroke-dashoffset: 0; }
+
+            }
+
+
+
+            /* --- Reports (Scanning Lines) --- */
+            .report-line {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                transform-origin: left;
+
+            }
+
+
+
+            .nav-item:hover .report-line:nth-child(3) { /* Top line */
+                transform: translateX(2px);
+                transition-delay: 0ms;
+
+            }
+
+            .nav-item:hover .report-line:nth-child(4) { /* Middle line */
+                transform: translateX(2px);
+                transition-delay: 75ms;
+
+            }
+
+            .nav-item:hover .report-line:nth-child(5) { /* Bottom line */
+                transform: translateX(2px);
+                transition-delay: 150ms;
+
+            }
+
+            /* Sensitivity button active colors */
+            .sensitivity-btn.active-relaxed,
+            .sensitivity-btn.active-relaxed:hover,
+            .sensitivity-btn.active-standard,
+            .sensitivity-btn.active-standard:hover,
+            .sensitivity-btn.active-strict,
+            .sensitivity-btn.active-strict:hover {
+
+                color:#fff!important;
+                transform:scale(1.02)!important;
+
+            }
+
+            .sensitivity-btn.active-relaxed,
+            .sensitivity-btn.active-relaxed:hover {
+                background-color:#10b981!important;
+                border-color:#34d399!important;
+                box-shadow:0 0 22px rgba(16,185,129,.55)!important;
+
+            }
+
+            .sensitivity-btn.active-standard,
+            .sensitivity-btn.active-standard:hover {
+                background-color:#2563eb!important;
+            
+            }
+        </style>
+  </head>
+    <body class="h-screen flex flex-col relative overflow-hidden bg-[#040516]">
+
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#181F8C]/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+        <div class="absolute inset-0 cyber-grid opacity-20 pointer-events-none z-0"></div>
+
+        <div class="relative z-20 flex h-screen w-full">
+
+        <!-- SIDEBAR -->
+       <nav id="sidebar" data-expanded="false" 
+     class="group h-fit max-h-[calc(100vh-4rem)] my-4 ml-3 bg-white/5 backdrop-blur-md border border-white/5 rounded-3xl flex flex-col py-6 
+            data-[expanded=true]:w-72 
+            data-[expanded=false]:w-20 
+            w-20 shrink-0 relative z-50 transition-all duration-300 shadow-xl shadow-black/20">
+            <div class="flex flex-col gap-y-4">
+            <!-- Logo -->
+            <div class="h-16 flex items-center px-4 relative z-20">
+                <div class="flex items-center gap-1 w-full">
+                    <div class="min-w-[40px] h-10 flex items-center justify-center relative">
+                        <div class="absolute inset-[-20px] bg-blue-700 blur-[80px] opacity-80 animate-pulse duration-[6000ms] pointer-events-none rounded-full z-0"></div>
+                        <svg class="relative w-8 h-8 text-blue-500 animate-tesseract z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <defs>
+                                <pattern id="simpleGridSmall" width="3" height="3" patternUnits="userSpaceOnUse">
+                                    <path d="M 3 0 L 0 0 0 3" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+                                </pattern>
+                            </defs>
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#simpleGridSmall)" />
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+
+                    <!-- Name in Sidebar -->
+                    <div class="overflow-hidden flex-1 transition-all duration-300 group-data-[expanded=false]:w-0 group-data-[expanded=false]:opacity-0">
+                        <div class="font-bold text-lg tracking-wide whitespace-nowrap text-white pl-3xl">VanGuard Link<span class="text-blue-500 ml-1">AI</span></div>
+                    </div>
+
+                    <!-- Toggle button: kept new visual but logic from old -->
+                   <button id="sidebar-toggle" aria-label="Toggle sidebar" class="absolute -right-3 top-9 bg-[#1a2035] text-slate-400 border border-slate-600 p-1.5 rounded-full hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all duration-300 shadow-lg shadow-black/50 z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto">                        <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 transition-transform duration-300 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Items -->
+            <div class="flex flex-col gap-1 px-2 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                <button onclick="switchPanel('scanner', this)" id="nav-scanner" class="nav-item flex items-center gap-2 p-2 rounded-2xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px]">
+                        <svg class="w-6 h-6 scanner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                            <path class="scanner-needle" d="M12 12v-6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                            <path class="scan-beam" d="M12 2a10 10 0 0 1 10 10" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Scanner
+                    </span>
+                </button>
+
+                <!-- Security Vault -->
+                <button onclick="switchPanel('vault', this)" id="nav-vault" class="nav-item flex items-center gap-2 p-2 rounded-2xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px] flex items-center justify-center">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" class="vault-shield" />
+                            <line x1="9" y1="10" x2="15" y2="10" class="vault-bar-top" />
+                            <line x1="9" y1="14" x2="15" y2="14" class="vault-bar-bot" />
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Security Vault
+                    </span>
+                </button>
+
+                <!-- Performance -->
+                <!-- <button onclick="switchPanel('performance', this)" id="nav-performance" class="nav-item flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px] flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                            <path d="M5 16a7.5 7.5 0 1 1 14 0" />
+                            <path d="M12 5V3M18 9l1.5-1.5M6 9L4.5 7.5" />
+                            <circle cx="12" cy="14" r="1.5" fill="currentColor" />
+                            <path class="performance-needle" d="M12 14L16 9" style="transform-origin: 12px 14px;" />
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Performance
+                    </span>
+                </button>
+                 -->
+                <!-- HISTORY -->
+                <button onclick="switchPanel('history', this)" id="nav-history" class="nav-item flex items-center gap-2 p-2 rounded-2xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px]">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3.892 7.548a9.7 9.7 0 0 1 1.413-1.93c3.521-3.7 9.386-3.834 13.076-.313 3.7 3.521 3.835 9.386.314 13.075-3.522 3.701-9.387 3.836-13.076.314 a9.23 9.23 0 0 1-2.702-4.956"/>
+                            <path d="M7.25 8.25H2.749v-4.5"/>
+                            <path class="clock-hand" d="M12 11.94V6.75m0 5.19 3.25 3.31"/>
+                        </svg>
+                    </div>
+                    
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        History
+                    </span>
+
+                    <span id="history-badge" class="ml-auto text-[10px] bg-blue-600/20 text-blue-400 px-2 py-0.5 rounded-full opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:hidden transition-all duration-200 border border-blue-500/20">
+                        0
+                    </span>
+                </button>
+
+                <!-- Threat Feed -->
+                <!-- <button onclick="switchPanel('threats', this)" id="nav-threats" class="nav-item flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[24px] flex items-center justify-center">
+                        <svg class="w-5 h-5 threat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3L22 20H2L12 3z"/>
+                            <path d="M12 9v5"/>
+                            <circle cx="12" cy="17" r="0.3"/>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Threat Feed
+                    </span>
+                </button> -->
+                
+
+                <!-- Quarantine -->
+                <button onclick="switchPanel('quarantine', this)" id="nav-quarantine" class="nav-item flex items-center gap-2 p-2 rounded-2xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[24px]">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path class="shield-icon" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <line class="shield-line" x1="4" y1="4" x2="20" y2="20"></line>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Quarantine
+                    </span>
+                </button>
+
+                <!-- Activity Monitor -->
+                <!-- <button onclick="switchPanel('activity', this)" id="nav-activity" class="nav-item flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[24px]">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <polyline class="activity-pulse" points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Activity Monitor
+                    </span>
+                </button> -->
+
+                <!-- Reports -->
+                <!-- <button onclick="switchPanel('reports', this)" id="nav-reports" class="nav-item flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[24px]">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line class="report-line" x1="16" y1="13" x2="8" y2="13"></line>
+                            <line class="report-line" x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline class="report-line" points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Reports
+                    </span>
+                </button> -->
+
+                <!-- Premium -->
+                <!--
+                <button onclick="switchPanel('premium', this)" id="nav-premium" class="mt-2 nav-item flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-br from-purple-900/50 to-blue-900/50 border border-white/5 hover:border-white/20 text-slate-300 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px]">
+                        <svg class="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200 text-sm font-semibold">Upgrade Plan</span>
+                </button>
+                -->
+            </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="mt-auto px-3 p-3 border-t border-white/10">
+                <button onclick="switchPanel('settings', this)" id="nav-settings" class="group w-full nav-item flex items-center gap-2 p-3 rounded-xl hover:bg-white/5 text-slate-400 hover:text-white transition-all group/item group-data-[expanded=false]:justify-center group-data-[expanded=false]:gap-0">
+                    <div class="min-w-[28px] flex items-center justify-center transition-transform duration-300 group-hover/item:rotate-90">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m20.652 14.43-1.61-.93c.11-.48.16-.99.16-1.5s-.05-1.02-.16-1.5l1.61-.93c.24-.13.32-.44.19-.68l-1.75-3.03a.505.505 0 0 0-.69-.18l-1.62.94c-.74-.68-1.61-1.2-2.58-1.5V3.25c0-.28-.22-.5-.5-.5h-3.5c-.28 0-.5.22-.5.5v1.87c-.97.3-1.84.82-2.58 1.5l-1.62-.94a.505.505 0 0 0-.69.18l-1.75 3.03c-.13.24-.05.55.19.68l1.61.93c-.11.48-.16.99-.16 1.5s.05 1.02.16 1.5l-1.61.93c-.24.13-.32.44-.19.68l1.75 3.03c.14.24.45.32.69.18l1.62-.94c.74.68 1.61 1.2 2.58 1.5v1.87c0 .28.22.5.5.5h3.5c.28 0 .5-.22.5-.5v-1.87c.97-.3 1.84-.82 2.58-1.5l1.62.94c.24.14.55.06.69-.18l1.75-3.03c.13-.24.05-.55-.19-.68"/>
+                            <path d="M12 8.85a3.15 3.15 0 1 0 0 6.3a3.15 3.15 0 0 0 0-6.3"/>
+                        </svg>
+                    </div>
+                    <span class="whitespace-nowrap opacity-100 group-data-[expanded=false]:opacity-0 group-data-[expanded=false]:w-0 transition-all duration-200">
+                        Settings
+                    </span>
+                </button>
+            </div>
+
+        </nav>
+
+
+        <!-- CONTROL PANEL (rounded like new) -->
+        <aside id="control-panel" class="w-0 h-[calc(100vh-32px)] my-4 ml-0 bg-[#0b1024]/80 backdrop-blur-2xl border border-white/10 rounded-3xl flex flex-col items-stretch z-30 shrink-0 transition-all duration-300 shadow-2xl opacity-0 overflow-hidden">    
+            <button onclick="closePanel()" class="text-slate-400 hover:text-white transition-all duration-200 absolute top-4 right-4 z-50 p-2 hover:scale-110 hover:rotate-90">
+                <svg class="w-5 h-5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div id="panel-quarantine" class="panel-content hidden h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
+    
+                <div class="mb-6 mt-2">
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Quarantine</h2>
+                    <p class="text-sm text-slate-500 mt-1">Isolate and manage flagged malicious links.</p>
+                </div>
+
+                <div class="border-t border-white/10 my-4"></div>
+
+                <div id="empty-quarantine" class="flex-1 flex flex-col items-center justify-center text-center opacity-40 py-10">
+                    <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center text-red-500 mb-4">
+                        <svg class="w-16 h-16 mb-4" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="32" fill="#ef4444" fill-opacity="0.05"/>
+                            <path d="M32 24.5V29.5M32 37.5H32.02M21.31 43.5H42.69C45.01 43.5 46.45 41 45.3 39L34.61 20.5C33.45 18.5 30.55 18.5 29.39 20.5L18.7 39C17.55 41 18.99 43.5 21.31 43.5Z" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-white">Quarantine is Clear</h3>
+                    <p class="text-xs text-slate-500 mt-1">No malicious threats are currently isolated.</p>
+                </div>
+
+                <div id="items-quarantine" class="space-y-3 hidden">
+                    <div class="group p-4 rounded-2xl bg-red-500/5 border border-red-500/10 hover:border-red-500/20 transition-all">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400">
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4m0 4h.01" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">malicious-site.xyz</div>
+                                    <div class="text-[10px] text-red-400/60 font-mono uppercase">Type: Phishing / Deceptive</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-slate-500 font-mono">2m ago</span>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button class="flex-1 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider transition-all">Restore</button>
+                            <button class="flex-1 py-2 rounded-lg bg-red-600/20 hover:bg-red-600 text-[10px] font-bold text-red-400 hover:text-white uppercase tracking-wider transition-all border border-red-500/20">Delete Forever</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto pt-6 border-t border-white/5">
+                    <button id="clearQuarantineBtn" class="w-full py-3 rounded-xl bg-red-600/10 hover:bg-red-600/20 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest transition-all">
+                        Empty Quarantine
+                    </button>
+                </div>
+            </div>
+
+            <div id="panel-reports" class="panel-content hidden h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
+
+                <div class="mb-6 mt-2">
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Reports</h2>
+                    <p class="text-sm text-slate-500 mt-1">Review your protection history and threat distribution.</p>
+                </div> 
+                <div class="border-t border-white/10 my-4"></div>
+
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-center">
+                        <div class="text-[10px] text-blue-400 font-bold uppercase tracking-wider mb-1">Total Scans</div>
+                        <div class="text-2xl font-bold text-white">1,284</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                        <div class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider mb-1">Security Score</div>
+                        <div class="text-2xl font-bold text-white">98%</div>
+                    </div>
+                </div>
+
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 px-1">Threat Distribution</h3>
+                <div class="space-y-2 mb-6">
+                    <div class="w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                            <span class="text-sm text-slate-300">Phishing Links Blocked</span>
+                        </div>
+                        <span class="text-sm font-mono text-white">42</span>
+                    </div>
+                    <div class="w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                            <span class="text-sm text-slate-300">Malware Detected</span>
+                        </div>
+                        <span class="text-sm font-mono text-white">12</span>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">30-Day Activity</span>
+                        <span class="text-[10px] text-blue-400 font-bold">+12% vs last month</span>
+                    </div>
+                    <div class="flex items-end justify-between h-20 gap-1 px-2">
+                        <div class="w-full bg-blue-500/20 rounded-t-sm h-[40%]"></div>
+                        <div class="w-full bg-blue-500/20 rounded-t-sm h-[60%]"></div>
+                        <div class="w-full bg-blue-500/40 rounded-t-sm h-[80%]"></div>
+                        <div class="w-full bg-blue-600 rounded-t-sm h-[100%]"></div>
+                        <div class="w-full bg-blue-500/20 rounded-t-sm h-[50%]"></div>
+                    </div>
+                </div>
+
+                <button class="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group mt-auto">
+                    <span class="text-sm text-slate-300 group-hover:text-white font-medium">Export Scan Reports</span>
+                    <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </button>
+
+            </div>
+
+            <!-- Performance -->
+            <div id="panel-performance" class="panel-content hidden h-full flex flex-col p-6">
+
+                <div class="mb-6 mt-2">
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Engine Performance</h2>
+                    <p class="text-sm text-slate-500 mt-1">Optimize scan speed and system impact.</p>
+                </div>
+
+                <div class="border-t border-white/10 my-4"></div>
+                
+                <div class="space-y-3 w-full flex flex-col items-stretch">
+                    <button id="btn-scan-mode" onclick="cycleScanMode()" class="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group cursor-pointer">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Scan Speed Mode</span>
+                        <span id="lbl-scan-mode" class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30 font-bold uppercase">Balanced</span>
+                    </button>
+
+                    <button id="btn-resource-limit" onclick="cycleResourceLimit()" class="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group cursor-pointer">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Resource Usage Limit</span>
+                        <div class="flex items-center gap-2">
+                            <span id="lbl-resource-limit" class="text-[10px] text-slate-500 font-bold group-hover:text-slate-400">Medium</span>
+                            <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </button>
+
+                    <button id="btn-realtime" onclick="toggleRealTime()" class="w-full p-4 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between cursor-pointer hover:bg-white/10 transition-all">
+                        <span class="text-sm text-slate-300 font-medium">Real-Time Scan</span>
+                        <div id="toggle-track" class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative transition-colors duration-300">
+                            <div id="toggle-knob" class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow transition-all duration-300"></div>
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="mt-auto p-4 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
+                    <p class="text-[10px] text-blue-400/60 font-mono leading-relaxed">
+                        SYSTEM NOTE: Higher speed modes increase CPU usage. Real-time scanning is recommended for active browsing.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Security Vault Panel -->
+            <div id="panel-vault" class="panel-content hidden h-full flex flex-col p-6">
+                <div class="p-6 pb-2">
+                    <h2 class="text-2xl font-bold text-white mb-1">Security Vault</h2>
+                    <p class="text-slate-400 text-sm">Manage your trusted and blocked domains.</p>
+                </div>
+                <div class="border-t border-white/10 my-4"></div> 
+
+                <div class="px-2 py-2">
+                    <div class="flex p-1 bg-white/5 rounded-xl border border-white/5">
+                        <button onclick="toggleVaultTab('whitelist')" id="tab-whitelist" class="flex-1 py-2 text-sm font-medium text-white bg-blue-600 shadow-lg shadow-blue-900/20 rounded-lg transition-all">
+                            Whitelist
+                        </button>
+                        <button onclick="toggleVaultTab('blacklist')" id="tab-blacklist" class="flex-1 py-2 text-sm font-medium text-slate-400 hover:text-white transition-all">
+                            Blacklist
+                        </button>
+                    </div>
+                </div>
+
+                <div id="list-whitelist" class="flex-1 flex flex-col px-6 pb-4 overflow-y-auto custom-scrollbar">
+                    <div id="empty-whitelist" class="flex-1 flex flex-col items-center justify-center text-center opacity-40 py-10">
+                        <svg class="w-12 h-12 mb-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <p class="text-sm font-medium text-white">Whitelist Empty</p>
+                        <p class="text-xs text-slate-500 mt-1">Trusted domains will appear here</p>
+                    </div>
+                    <div id="items-whitelist" class="space-y-3 hidden"></div>
+                </div>
+
+                <div id="list-blacklist" class="flex flex-col flex-1 px-6 pb-4 overflow-y-auto custom-scrollbar hidden">
+                    <div id="empty-blacklist" class="flex-1 flex flex-col items-center justify-center text-center opacity-40 py-10">
+                        <svg class="w-12 h-12 mb-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                        </svg>
+                        <p class="text-sm font-medium text-white">Blacklist Empty</p>
+                        <p class="text-xs text-slate-500 mt-1">Blocked malicious links will appear here</p>
+                    </div>
+                    <div id="items-blacklist" class="space-y-3 hidden"></div>
+                </div>
+
+                <div class="p-6 border-t border-white/5 bg-[#0b1024]/50 backdrop-blur-sm mt-auto">
+                <button onclick="addNewDomain()" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium transition-all flex items-center justify-center gap-2">
+                    <span class="text-lg">+</span> Add New Domain
+                </button>
+            </div>
+            </div>
+
+            <!-- Activity Panel  -->
+            <div id="panel-activity" class="panel-content hidden h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-white mb-2">System Status</h2>
+                    <p class="text-slate-400 text-sm">Real-time engine performance.</p>
+                </div>
+                <div class="border-t border-white/10 my-4"></div> 
+
+                <div class="space-y-2">
+                <div class="w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <span class="text-sm text-slate-300 font-medium">Scanner Status</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                            <span class="text-[10px] text-green-400 font-bold uppercase">Operational</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                        <span class="text-sm text-slate-300 font-medium group-hover:text-white transition-colors">Engine Version</span>
+                        <span class="text-[10px] text-slate-500 font-mono">v2.4.0</span>
+                    </div>
+
+                    <div class="w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group">
+                        <span class="text-sm text-slate-300 font-medium group-hover:text-white transition-colors">Rule Database</span>
+                        <span class="text-[10px] text-slate-500 font-mono">2026.02.02</span>
+                    </div>
+                </div>
+
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-3 px-1">Resource Impact</h3>
+                <div class="space-y-4 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-medium text-slate-400">
+                            <span>Scanner CPU Load</span>
+                            <span id="cpu-load-text" class="text-blue-400">0%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="cpu-bar" class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-medium text-slate-400">
+                            <span>Memory Footprint</span>
+                            <span id="mem-footprint-text" class="text-emerald-400">0MB</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="mem-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 w-full p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 flex items-center justify-between">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Active Threads</span>
+                        <span class="text-[10px] text-blue-400/60 mt-0.5">Multi-core processing active</span>
+                    </div>
+                    <div id="thread-count" class="text-2xl font-mono font-bold text-white">00</div>
+                </div>
+
+                <div class="mt-3 w-full p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                    <span class="text-sm text-slate-300 font-medium">Engine Uptime</span>
+                    <span id="uptime-clock" class="text-[10px] text-slate-500 font-mono tracking-widest">00:00:00</span>
+                </div>
+            </div>
+
+            <!-- Threat Feed Panel -->
+            <!-- <div id="panel-threats" class="panel-content hidden h-full flex flex-col p-6">
+                <div class="flex items-center gap-3 mb-4 mt-2 px-1 shrink-0">
+                    <div class="relative flex items-center justify-center w-4 h-4"><div class="absolute w-full h-full bg-red-500 rounded-full animate-ping opacity-75"></div><div class="relative w-2 h-2 bg-red-500 rounded-full"></div></div>
+                    <h2 class="text-sm font-bold text-white tracking-[0.2em] font-mono uppercase">Global Threat Map</h2>
+                    <span class="ml-auto text-[10px] text-slate-500 font-mono" id="active-connection-count">CONN: ESTABLISHED</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 mb-4 shrink-0">
+                    <div class="bg-red-500/10 border border-red-500/20 p-3 rounded-lg">
+                        <div class="text-[10px] text-red-400 font-bold uppercase tracking-wider">Critical</div>
+                        <div class="text-xl font-mono text-white" id="stat-critical">0</div>
+                    </div>
+                    <div class="bg-orange-500/10 border border-orange-500/20 p-3 rounded-lg">
+                        <div class="text-[10px] text-orange-400 font-bold uppercase tracking-wider">High Risk</div>
+                        <div class="text-xl font-mono text-white" id="stat-high">0</div>
+                    </div>
+                </div>
+
+                <div id="threat-feed-container" class="flex-1 overflow-y-hidden relative bg-[#0f172a]/50 rounded-xl border border-white/5 p-2 font-mono text-xs">
+                    <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#0b1024] to-transparent z-10 pointer-events-none"></div>
+                    <div id="threat-list" class="space-y-1.5 overflow-hidden">
+                        <div class="flex items-center gap-2 text-slate-500 p-1"><span class="animate-pulse">_</span> Initializing feed...</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- History Panel -->
+            <div id="panel-history" class="panel-content hidden h-full flex flex-col p-6">
+                <div class="flex items-center gap-3 mb-6 mt-2 px-1 shrink-0">
+                    <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <h2 class="text-sm font-bold text-white tracking-[0.2em] font-mono uppercase">Scan Logs</h2>
+                </div>
+                <div id="history-list" class="space-y-2 pr-2 relative z-10"></div>
+                <div id="history-empty" class="hidden flex flex-col items-center justify-center text-center py10 opacity-60">
+                    <div class="text-slate-700 mb-4"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                    <h3 class="text-slate-400 font-medium text-lg">No scans yet</h3>
+                </div>
+                <div class="mt-8 pt-4 border-t border-white/5 flex justify-center">
+                    <button id="clearHistoryBtn" class="text-[10px] text-slate-500 hover:text-red-500 hover:tracking-widest transition-all duration-300 font-bold uppercase py-2">Clear All Logs</button>
+                </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div id="panel-settings" class="panel-content hidden h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
+    
+                <div class="mb-6 mt-2 px-2"> 
+                    <h2 class="text-3xl font-bold text-white tracking-tight">Settings</h2>
+                    <p class="text-sm text-slate-500 mt-1">Manage your preferences</p>
+                </div>
+
+                <div class="border-t border-white/10 my-4"></div>
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 px-2">Account</h3>
+
+                <div class="space-y-2">
+                    
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Profile</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Account Information</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Change Password</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all flex items-center justify-between group mt-4">
+                        <span class="text-sm text-red-400 group-hover:text-red-300 font-medium">Logout</span>
+                        <svg class="w-4 h-4 text-red-400/50 group-hover:text-red-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    </button>
+                </div>
+
+
+                <!-- Scanner Settings -->
+                <div class="border-t border-white/10 my-6"></div>
+                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Scanner Settings</h3>
+
+                <div class="space-y-2">
+                    
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Scan Sensitivity</span>
+                        <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded">High</span>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Heuristics</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Brand Impersonation</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                     <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Keyword Detection</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Financial & Credential Rule</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Suspicious TLD Detection</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Dangerous File Extension Detection</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">URL Shortener Detection</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Punycode Detection</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Trust Discount Rules</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <!-- Privacy Data -->
+                    <div class="border-t border-white/10 my-6"></div>
+                    <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Privacy & Data</h3>
+
+                    <div class="space-y-2">
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Local-Only Scanning</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Save Scan History</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Clear Scan History</span>
+                        <span class="text-[10px] text-slate-500 font-bold group-hover:text-red-400 transition-colors">124 MB</span>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Data Retention Control</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Security -->
+                    <div class="border-t border-white/10 my-6"></div>
+                    <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Security</h3>
+
+                    <div class="space-y-2">
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Trusted URLs</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] text-slate-500 font-bold group-hover:text-slate-400 transition-colors">12 entries</span>
+                                <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Blocked URLs</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] text-slate-500 font-bold group-hover:text-slate-400 transition-colors">45 entries</span>
+                                <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Manual Whitelist</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Manual Blacklist</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-red-400 group-hover:text-red-300 font-medium">Reset Security Rules</span>
+                            <svg class="w-4 h-4 text-red-400/50 group-hover:text-red-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4l16 16m0-16L4 20"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Developer
+                    <div class="border-t border-white/10 my-6"></div>
+                    <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Developer</h3>
+
+                    <div class="space-y-2">
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">API Access</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">API Keys</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Rate Limits</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Webhook Configuration</span>
+                        <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                        <span class="text-sm text-slate-300 group-hover:text-white font-medium">Debug Logs</span>
+                        <div class="w-8 h-4 bg-green-500/20 rounded-full border border-green-500 relative">
+                            <div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-green-400 rounded-full shadow"></div>
+                        </div>
+                    </button> -->
+
+                    <!-- Support and Legal -->
+                    <div class="border-t border-white/10 my-6"></div>
+                    <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Support & Legal</h3>
+
+                    <div class="space-y-2">
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Help Center</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">How Risk Scoring Work</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Report False Positive</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Report Missed Threat</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Privacy Policy</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Terms of Service</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-slate-300 group-hover:text-white font-medium">Desclaimer</span>
+                            <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+
+                        <button class="w-full text-left p-3 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all flex items-center justify-between group">
+                            <span class="text-sm text-red-400 group-hover:text-red-300 font-medium">Reset All Settings</span>
+                            <svg class="w-4 h-4 text-red-400/50 group-hover:text-red-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+
+                        <div class="mt-8 mb-4">
+                        <div class="border-t border-white/5 mb-4"></div>
+
+                        <div class="text-center space-y-1">
+                            <p class="text-[10px] text-slate-600 font-medium tracking-wide">
+                                &copy; 2026 VanGuard Link AI. All rights reserved.
+                            </p>
+                            
+                            <p class="text-[9px] text-slate-700 font-mono">
+                                v2.4.0-stable
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN Title & SCANNER -->
+        <main id="mainContainer" class="flex-1 flex flex-col items-center justify-center p-4 pr-24 z-10 relative">
+
+            <div class="relative group mb-8">
+                <div class="absolute inset-[-40px] bg-blue-600 blur-[80px] opacity-20 animate-pulse duration-[4000ms] pointer-events-none"></div>
+                <svg class="relative w-24 h-24 text-blue-500 animate-tesseract" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <defs>
+                        <pattern id="simpleGrid" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M 3 0 L 0 0 0 3" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/></pattern>
+                    </defs>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#simpleGrid)" />
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+
+            <h1 class="text-4xl font-bold mb-3 tracking-tight text-white"> VanGuard <span class="text-blue-500">Link</span></h1>
+            <p class="text-blue-500/50 text-[10px] tracking-[0.3em] font-bold mb-10 uppercase">Advanced Link Protection</p>
+
+            <div class="w-full max-w-lg space-y-5">
+                <div class="relative w-full group">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    </div>
+                    <input type="text" id="urlInput" placeholder="Enter URL or paste link to scan..." class="w-full pl-12 pr-4 py-4 bg-[#0f172a]/80 border border-slate-800 text-slate-200 rounded-lg focus:outline-none focus:border-blue-500/50 focus:bg-[#0f172a] focus:shadow-[0_0_20px_rgba(37,99,235,0.15)] transition-all duration-300 placeholder-slate-600 text-sm shadow-xl backdrop-blur-sm">
+                </div>
+                <button id="scanButton" class="w-full bg-blue-700 text-white text-sm font-bold tracking-wide py-4 rounded-lg transition-all duration-500 ease-out">SCAN LINK</button>
+
+                <div class="flex w-full gap-4 mt-8">
+                    <button onclick="setSensitivity('relaxed', this)" class="sensitivity-btn flex-1 py-4 rounded-xl border border-slate-800 bg-[#0f172a]/80 text-[10px] tracking-wider font-bold text-slate-500 hover:text-slate-300 hover:border-slate-600 hover:bg-[#1e293b] transition-all duration-300 backdrop-blur-sm">
+                        RELAXED
+                    </button>
+                    
+                    <button onclick="setSensitivity('standard', this)" class="sensitivity-btn flex-1 py-4 rounded-xl border border-slate-800 bg-[#0f172a]/80 text-[10px] tracking-wider font-bold text-slate-500 hover:text-slate-300 hover:border-slate-600 hover:bg-[#1e293b] transition-all duration-300 backdrop-blur-sm">
+                        STANDARD
+                    </button>
+
+                    
+                    <button onclick="setSensitivity('strict', this)" class="sensitivity-btn flex-1 py-4 rounded-xl border border-slate-800 bg-[#0f172a]/80 text-[10px] tracking-wider font-bold text-slate-500 hover:text-slate-300 hover:border-slate-600 hover:bg-[#1e293b] transition-all duration-300 backdrop-blur-sm">
+                        STRICT
+                    </button>
+                </div>
+            </div>
+            <!-- Bottom Spacer -->
+                <footer id="mainFooter" class="absolute bottom-0 w-full py-6 text-center z-10">
+                    <div class="max-w-lg mx-auto">
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold"> VanGuard Link v1.0</p>
+                        <p class="text-[9px] text-gray-600 mt-0.5 opacity-60">Results are heuristic estimates. Always verify URLs manually.</p>
+                        <p class="text-[9px] text-gray-600 mt-0.5 opacity-60">© 2026 VanGuard Link. All rights reserved.</p>
+                    </div>
+                </footer>
+        </main>
+
+        <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
+
+        <div id="modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden items-center justify-center transition-all duration-300 opacity-0">
+            <div class="bg-[#0b1024] border border-white/10 w-[90%] max-w-md rounded-3xl p-8 shadow-2xl transform scale-95 transition-all duration-300" id="domain-modal">
+                <div class="flex items-center gap-4 mb-6">
+                    <div id="modal-icon-container" class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white" id="modal-title">Add to Whitelist</h3>
+                        <p class="text-slate-400 text-sm">Enter the domain you want to trust.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Domain URL</label>
+                        <input type="text" id="modal-input" placeholder="example.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-all">
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button onclick="closeAddDomainModal()" class="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 font-medium transition-all">Cancel</button>
+                        <button onclick="confirmAddDomain()" class="flex-1 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-900/40 text-white font-medium transition-all">Add Domain</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="./src/main.js"></script>
+    </body>
+</html>
